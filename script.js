@@ -35,14 +35,14 @@ const defaultCerts = [
         title: 'AWS Generative AI Foundation Program including Party Rock Challenge',
         issuer: 'AWS / ERT (The Enterprise Resources Training Co., Ltd.)',
         issue_date: '2026-09',
-        pdf_url: '2.png'
+        pdf_url: '2.jpg' // เปลี่ยนเป็น .jpg
     },
     {
         id: 3,
         title: 'Meet The Youth Cyber Guardians Thailand 2025',
         issuer: 'หน่วยบัญชาการไซเบอร์ทหาร กองบัญชาการกองทัพไทย',
         issue_date: '2025-09',
-        pdf_url: '3.png'
+        pdf_url: '3.jpg' // เปลี่ยนเป็น .jpg
     }
 ];
 
@@ -337,7 +337,7 @@ function loadProfileAvatar() {
     if (!avatarImg) return;
     
     const savedImg = localStorage.getItem('thunjira_profile_img');
-    avatarImg.src = savedImg || DEFAULT_AVATAR_URL;
+    avatarImg.src = savedImg || '4.jpg'; // เปลี่ยนเป็น 4.jpg ให้ตรงกับไฟล์ใน GitHub
 }
 
 function processAndSaveAvatar(file, callback) {
