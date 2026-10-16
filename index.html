@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>นางสาว ธัญจิรา เรืองเกษา - Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Prompt', 'sans-serif'] },
+                    colors: {
+                        pastel: { 200: '#fbcfe8', 300: '#f472b6', 400: '#e879f9', 500: '#ec4899', 950: '#500724' },
+                        darkpink: { bg: '#0d0714', card: '#1c1226', border: 'rgba(244, 114, 182, 0.15)', badge: '#2e183b' }
+                    },
+                    boxShadow: { 'glow-pink': '0 0 25px rgba(236, 72, 153, 0.35)' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0d0714; color: #f3f4f6; }
+        .glass-card { background: rgba(28, 18, 38, 0.85); backdrop-filter: blur(16px); }
+        .cursor-blink { display: inline-block; width: 2px; height: 1em; background-color: #f472b6; margin-left: 2px; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+
+    <!-- Background Canvas Stars -->
+    <canvas id="starsCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- 🌸 NAVBAR -->
+    <nav class="sticky top-0 z-40 bg-[#0d0714]/80 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-400 flex items-center justify-center text-white font-bold shadow-md">✨</div>
+                <div>
+                    <h1 id="navThName" class="text-sm font-bold text-white leading-tight">นางสาว ธัญจิรา เรืองเกษา</h1>
+                    <p class="text-[10px] text-pink-300" data-i18n="nav.subtitle">ICT Student Portfolio</p>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <div class="hidden md:flex items-center gap-6 text-xs font-semibold text-gray-300">
+                <a href="#hero" class="hover:text-pink-300 transition-colors" data-i18n="nav.hero">1. ข้อมูลส่วนตัว</a>
+                <a href="#skills" class="hover:text-pink-300 transition-colors" data-i18n="nav.skills">2. ทักษะ</a>
+                <a href="#projects" class="hover:text-pink-300 transition-colors" data-i18n="nav.projects">3. ผลงาน</a>
+                <a href="#certifications" class="hover:text-pink-300 transition-colors" data-i18n="nav.certs">4. ใบรับรอง</a>
+            </div>
+
+            <!-- Controls (Lang & Admin) -->
+            <div class="flex items-center gap-2">
+                <button onclick="openAdminModal()" class="px-3 py-1.5 rounded-xl bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/30 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span data-i18n="nav.adminBtn">Admin</span>
+                </button>
+                <div class="flex items-center bg-white/5 rounded-xl p-1 border border-white/10 text-xs">
+                    <button id="langThBtn" onclick="switchLanguage('th')" class="px-2 py-1 rounded-lg bg-pink-500 text-white font-semibold">TH</button>
+                    <button id="langEnBtn" onclick="switchLanguage('en')" class="px-2 py-1 rounded-lg text-gray-400 hover:text-white">EN</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 📄 MAIN CONTENT CONTAINER -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24 relative z-10">
+
+        <!-- 👤 01. HERO SECTION -->
+        <section id="hero" class="scroll-mt-24">
+            <div class="mb-6">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span data-i18n="hero.statusBadge">🟢 พร้อมรับโอกาสฝึกงานและร่วมงาน (Open for Internship & Work)</span>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-4xl p-6 sm:p-10 border border-darkpink-border/80 shadow-2xl relative overflow-hidden">
+                <div class="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-10 relative z-10">
+                    <!-- Profile Avatar -->
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="relative group">
+                            <div class="w-36 h-40 sm:w-44 sm:h-48 rounded-3xl p-1 bg-gradient-to-tr from-pastel-400 via-rose-400 to-pastel-200 shadow-glow-pink relative overflow-hidden">
+                                <img id="heroAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" alt="ธัญจิรา เรืองเกษา" class="w-full h-full object-cover rounded-[1.35rem] transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <input type="file" id="avatarUploadInput" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
+                        </div>
+                        <button onclick="document.getElementById('avatarUploadInput').click()" class="mt-3 px-3.5 py-1.5 rounded-full bg-darkpink-badge border border-pastel-300/40 text-pastel-200 hover:bg-pastel-200/20 text-xs font-semibold shadow-sm flex items-center gap-1.5 transition-all cursor-pointer">
+                            <i class="fa-solid fa-camera"></i>
+                            <span data-i18n="hero.changeAvatarBtn">📷 เปลี่ยนรูปภาพโปรไฟล์</span>
+                        </button>
+                    </div>
+
+                    <!-- Profile Bio Text Details -->
+                    <div class="flex-1 text-center lg:text-left space-y-4">
+                        <div>
+                            <p class="text-xs text-pink-300 font-bold mb-1 flex items-center justify-center lg:justify-start gap-1">
+                                <span data-i18n="hero.greeting">สวัสดีค่ะ 👋 ฉันชื่อ</span>
+                            </p>
+                            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight flex flex-wrap items-baseline justify-center lg:justify-start gap-2">
+                                <span id="heroThName">นางสาว ธัญจิรา เรืองเกษา</span>
+                                <span id="heroEnName" class="text-sm sm:text-lg text-pink-300 font-medium">Ms. Thunjira Runkesa</span>
+                            </h1>
+                        </div>
+
+                        <!-- Typing Role Effect -->
+                        <div class="flex items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm font-semibold text-gray-300">
+                            <span data-i18n="hero.rolePrefix">สายงานและความสนใจ:</span>
+                            <span id="typingElement" class="text-pink-400 font-bold border-b-2 border-pink-400 pb-0.5"></span>
+                        </div>
+
+                        <p id="heroBioText" class="text-xs sm:text-sm text-gray-300 leading-relaxed italic bg-white/5 p-4 rounded-2xl border border-white/5 text-justify" data-i18n="hero.bioText">
+                            "สวัสดีค่ะ! ดิฉันเป็นนักศึกษาสาขาเทคโนโลยีสารสนเทศและการสื่อสาร (ICT) ผู้มีความหลงใหลในการพัฒนา Modern Web Application ที่ทั้งสวยงาม น่ารัก ใช้งานง่าย และมีประสิทธิภาพสูง"
+                        </p>
+
+                        <!-- Quick Info Pills -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
+                            <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10">
+                                <span data-i18n="pills.gpax" class="text-[10px] text-gray-400 block">GPAX สะสม</span>
+                                <span id="heroGpax" class="font-bold text-pink-300 text-sm">3.85</span>
+                            </div>
+                            <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10 truncate">
+                                <span data-i18n="pills.phone" class="text-[10px] text-gray-400 block">เบอร์โทรศัพท์</span>
+                                <a id="heroPhone" href="tel:0615561427" class="font-bold text-white hover:text-pink-300">061-556-1427</a>
+                            </div>
+                            <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10 truncate">
+                                <span data-i18n="pills.email" class="text-[10px] text-gray-400 block">อีเมล</span>
+                                <a id="heroEmail" href="mailto:thunjira.run@gmail.com" class="font-bold text-white hover:text-pink-300 truncate block">thunjira.run@gmail.com</a>
+                            </div>
+                            <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10">
+                                <span data-i18n="pills.uni" class="text-[10px] text-gray-400 block">มหาวิทยาลัย</span>
+                                <span class="font-bold text-white truncate block">ICT</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center justify-center lg:justify-start gap-3 pt-2">
+                            <button onclick="openEditProfileModal()" class="px-4 py-2 bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-pen"></i>
+                                <span data-i18n="nav.editBtnShort">แก้ไขข้อมูล</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🛠️ 02. TECHNICAL SKILLS SECTION -->
+        <section id="skills" class="scroll-mt-24">
+            <div class="mb-6">
+                <span data-i18n="skills.tag" class="text-xs font-bold text-pink-400 tracking-wider">02. ทักษะความสามารถ (SKILLS)</span>
+                <h2 data-i18n="skills.heading" class="text-xl sm:text-2xl font-bold text-white mt-1">ทักษะเฉพาะด้าน 4 หมวดหมู่</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-[#1c1226]/80 border border-pink-500/20 rounded-2xl p-5 hover:border-pink-500/50 transition-colors">
+                    <h3 data-i18n="skills.cat1" class="text-xs font-bold text-pink-300 mb-3">1. Programming Languages</h3>
+                    <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-gray-300">
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">JavaScript (ES6+)</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">TypeScript</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Python</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">HTML5 / CSS3</span>
+                    </div>
+                </div>
+                <div class="bg-[#1c1226]/80 border border-pink-500/20 rounded-2xl p-5 hover:border-pink-500/50 transition-colors">
+                    <h3 data-i18n="skills.cat2" class="text-xs font-bold text-pink-300 mb-3">2. Frontend Development</h3>
+                    <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-gray-300">
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">React.js</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Tailwind CSS</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Figma (UI/UX)</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Glassmorphism</span>
+                    </div>
+                </div>
+                <div class="bg-[#1c1226]/80 border border-pink-500/20 rounded-2xl p-5 hover:border-pink-500/50 transition-colors">
+                    <h3 data-i18n="skills.cat3" class="text-xs font-bold text-pink-300 mb-3">3. Backend & Database</h3>
+                    <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-gray-300">
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Node.js / Express</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Cloudflare D1 (SQLite)</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">RESTful API</span>
+                    </div>
+                </div>
+                <div class="bg-[#1c1226]/80 border border-pink-500/20 rounded-2xl p-5 hover:border-pink-500/50 transition-colors">
+                    <h3 data-i18n="skills.cat4" class="text-xs font-bold text-pink-300 mb-3">4. Tools & Cloudflare</h3>
+                    <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-gray-300">
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Cloudflare Workers</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">Git / GitHub</span>
+                        <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10">VS Code</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 💻 03. MY PROJECTS SECTION -->
+        <section id="projects" class="scroll-mt-24">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <i class="fa-solid fa-folder-open text-pink-400 text-sm"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider text-pink-400" data-i18n="projects.tag">03. ผลงานของฉัน (MY PROJECTS)</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white" data-i18n="projects.heading">ผลงานพัฒนาเว็บแอปพลิเคชัน</h2>
+                </div>
+
+                <button type="button" onclick="openProjectModal()" class="px-5 py-2.5 rounded-[2rem] bg-gradient-to-r from-pink-500 via-rose-400 to-pink-400 text-white text-xs font-semibold shadow-glow-pink hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span>✨</span>
+                    <span data-i18n="projects.addBtn">เพิ่มผลงานใหม่</span>
+                </button>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap items-center gap-2.5 mb-6">
+                <button onclick="filterProjects('all')" id="filterAll" class="project-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-pink-500 text-white shadow-sm" data-i18n="filter.all">ทั้งหมด</button>
+                <button onclick="filterProjects('fullstack')" id="filterFullstack" class="project-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-[#1c1226]/80 text-gray-300 border border-pink-500/30" data-i18n="filter.fullstack">Full-Stack</button>
+                <button onclick="filterProjects('frontend')" id="filterFrontend" class="project-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-[#1c1226]/80 text-gray-300 border border-pink-500/30" data-i18n="filter.frontend">Frontend</button>
+                <button onclick="filterProjects('backend')" id="filterBackend" class="project-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-[#1c1226]/80 text-gray-300 border border-pink-500/30" data-i18n="filter.backend">Backend</button>
+            </div>
+
+            <!-- Projects Grid Container -->
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- 📜 04. CERTIFICATIONS SECTION -->
+        <section id="certifications" class="scroll-mt-24">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <i class="fa-solid fa-award text-pink-400 text-sm"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider text-pink-400" data-i18n="certs.tag">04. การฝึกอบรมและใบรับรอง (CERTIFICATIONS)</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white" data-i18n="certs.heading">ใบประกาศนียบัตร & ทักษะวิชาชีพ</h2>
+                </div>
+
+                <button type="button" onclick="openCertModal()" class="px-5 py-2.5 rounded-[2rem] bg-gradient-to-r from-pink-500 via-rose-400 to-pink-400 text-white text-xs font-semibold shadow-glow-pink hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span>💖</span>
+                    <span data-i18n="certs.addBtn">เพิ่มใบรับรองใหม่</span>
+                </button>
+            </div>
+
+            <!-- Certifications Grid Container -->
+            <div id="certsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+    </main>
+
+    <!-- 💖 FOOTER -->
+    <footer class="relative z-10 border-t border-white/10 py-8 px-4 text-center text-xs text-gray-400">
+        <p>© 2026 <span id="footerThName" class="text-pink-300 font-semibold">นางสาว ธัญจิรา เรืองเกษา</span> - ICT Student Portfolio</p>
+    </footer>
+
+    <!-- MODAL POPUPS -->
+    <!-- ✏️ EDIT PROFILE MODAL -->
+    <div id="editProfileModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1c1226] border border-pink-500/30 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative text-white">
+            <button type="button" onclick="closeEditProfileModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-user-pen text-amber-400"></i>
+                <span>แก้ไขข้อมูลส่วนตัว</span>
+            </h3>
+
+            <form id="editProfileForm" onsubmit="handleProfileSubmit(event)" class="space-y-3.5 text-xs">
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">รูปโปรไฟล์ใหม่ (อัปโหลดไฟล์ภาพ)</label>
+                    <input type="file" id="modalAvatarInput" accept="image/*"
+                        class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-pink-500/20 file:text-pink-300 hover:file:bg-pink-500/30 cursor-pointer">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">ชื่อ-นามสกุล (ภาษาไทย)</label>
+                    <input type="text" id="editThName" required class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">ชื่อ-นามสกุล (English)</label>
+                    <input type="text" id="editEnName" required class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">ข้อความแนะนำตัว (Bio TH)</label>
+                    <textarea id="editBioTh" rows="3" class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500 resize-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-gray-300 font-medium mb-1">GPAX สะสม</label>
+                        <input type="number" step="0.01" id="editGpax" class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 font-medium mb-1">เบอร์โทรศัพท์</label>
+                        <input type="text" id="editPhone" class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">อีเมล</label>
+                    <input type="email" id="editEmail" class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div class="flex gap-2 pt-3">
+                    <button type="button" onclick="closeEditProfileModal()" class="w-1/2 py-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-xl font-semibold transition-all cursor-pointer">
+                        ยกเลิก
+                    </button>
+                    <button type="submit" class="w-1/2 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-semibold shadow-md transition-all cursor-pointer">
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 📁 PROJECT MODAL -->
+    <div id="projectModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1c1226] border border-pink-500/30 w-full max-w-md rounded-3xl p-6 shadow-2xl relative text-white">
+            <button type="button" onclick="closeProjectModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h3 id="projectModalTitle" class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                <span>เพิ่มผลงานใหม่</span>
+            </h3>
+
+            <form id="projectForm" onsubmit="handleProjectSubmit(event)" class="space-y-3.5 text-xs">
+                <input type="hidden" id="projId">
+                
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">ชื่อผลงาน / โครงงาน *</label>
+                    <input type="text" id="projTitle" required placeholder="เช่น Smart Dormitory Hub"
+                        class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">หมวดหมู่ *</label>
+                    <select id="projCategory" class="w-full px-3.5 py-2 rounded-xl bg-[#1c1226] border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                        <option value="fullstack">Full-Stack</option>
+                        <option value="frontend">Frontend</option>
+                        <option value="backend">Backend</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">รายละเอียดโครงงาน *</label>
+                    <textarea id="projDesc" rows="3" required placeholder="อธิบายรายละเอียดหรือเทคโนโลยีที่ใช้..."
+                        class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500 resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">อัปโหลดรูปภาพตัวอย่าง</label>
+                    <input type="file" id="projImageFile" accept="image/*"
+                        class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-pink-500/20 file:text-pink-300 hover:file:bg-pink-500/30 cursor-pointer">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">หรือระบุ URL รูปภาพ</label>
+                    <input type="url" id="projImageUrl" placeholder="https://..."
+                        class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">ลิงก์ผลงาน (Demo / GitHub)</label>
+                    <input type="url" id="projDemoUrl" placeholder="https://github.com/..."
+                        class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div class="flex gap-2 pt-3">
+                    <button type="button" onclick="closeProjectModal()" class="w-1/2 py-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-xl font-semibold transition-all cursor-pointer">
+                        ยกเลิก
+                    </button>
+                    <button type="submit" class="w-1/2 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-semibold shadow-md transition-all cursor-pointer">
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 📜 CERTIFICATE MODAL -->
+    <div id="certModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1c1226] border border-pink-500/30 w-full max-w-md rounded-3xl p-6 shadow-2xl relative text-white">
+            <button type="button" onclick="closeCertModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h3 id="certModalTitle" class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-award text-pink-400"></i>
+                <span>เพิ่มใบรับรองใหม่</span>
+            </h3>
+
+            <form id="certForm" onsubmit="handleCertSubmit(event)" class="space-y-3.5 text-xs">
+                <input type="hidden" id="certId">
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">ชื่อหลักสูตร / ใบประกาศนียบัตร *</label>
+                    <input type="text" id="certTitle" required placeholder="เช่น Cloudflare Developer Fundamentals"
+                        class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">สถาบัน / ผู้ออกใบรับรอง *</label>
+                    <input type="text" id="certIssuer" required placeholder="เช่น Cloudflare Education Academy"
+                        class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">เดือน/ปี ที่ได้รับ (เช่น 2026-10)</label>
+                    <input type="text" id="certDate" placeholder="YYYY-MM"
+                        class="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1">แนบไฟล์ PDF หรือรูปภาพใบรับรอง</label>
+                    <input type="file" id="certPdfFile" accept="application/pdf,image/*"
+                        class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-pink-500/20 file:text-pink-300 hover:file:bg-pink-500/30 cursor-pointer">
+                </div>
+
+                <div class="flex gap-2 pt-3">
+                    <button type="button" onclick="closeCertModal()" class="w-1/2 py-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-xl font-semibold transition-all cursor-pointer">
+                        ยกเลิก
+                    </button>
+                    <button type="submit" class="w-1/2 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-semibold shadow-md transition-all cursor-pointer">
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 🔐 ADMIN AUTHENTICATION PASSCODE MODAL -->
+    <div id="adminAuthModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1c1226] border border-pink-500/30 w-full max-w-sm rounded-3xl p-6 shadow-2xl relative text-white">
+            <button type="button" onclick="closeAdminAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-pink-500/20 border border-pink-500/40 rounded-2xl flex items-center justify-center mx-auto mb-3 text-pink-400">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">เข้าสู่ระบบหลังบ้าน (Admin)</h3>
+                <p class="text-xs text-gray-400 mt-1">กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
+            </div>
+
+            <form onsubmit="verifyAdminPasscode(event)" class="space-y-4">
+                <div>
+                    <input type="password" id="adminPasscode" placeholder="กรอกรหัสผ่าน..." required
+                        class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs text-center tracking-widest focus:outline-none focus:border-pink-500 transition-colors">
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeAdminAuthModal()" class="w-1/2 py-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-xl text-xs font-semibold transition-all cursor-pointer">
+                        ยกเลิก
+                    </button>
+                    <button type="submit" class="w-1/2 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xs font-semibold shadow-md transition-all cursor-pointer">
+                        ยืนยัน
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 🛠️ ADMIN CMS MODAL -->
+    <div id="adminModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1c1226] border border-pink-500/30 w-full max-w-2xl rounded-3xl p-6 shadow-2xl relative text-white">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-database text-pink-400"></i>
+                    <span>ระบบจัดการหลังบ้าน (Admin CMS & Cloudflare D1)</span>
+                </h3>
+                <button type="button" onclick="closeAdminModal()" class="text-gray-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <p class="text-gray-300">จัดการข้อมูล และสำรองข้อมูลระบบหลังบ้าน:</p>
+                <div class="flex flex-wrap gap-3">
+                    <button type="button" onclick="exportDataJson()" class="px-4 py-2.5 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-xl transition-all shadow-md cursor-pointer">
+                        สำรองข้อมูล (JSON Export)
+                    </button>
+                    <button type="button" onclick="resetDefaultData()" class="px-4 py-2.5 bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-500/40 font-semibold rounded-xl transition-all cursor-pointer">
+                        รีเซ็ตข้อมูลทั้งหมดกลับค่าเริ่มต้น
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📄 PDF & IMAGE PREVIEW MODAL -->
+    <div id="pdfModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 hidden">
+        <div class="bg-[#1c1226] border border-pink-500/30 rounded-3xl w-full max-w-4xl h-[85vh] flex flex-col shadow-2xl overflow-hidden relative">
+            <div class="p-4 bg-black/30 border-b border-white/10 flex items-center justify-between gap-2">
+                <h4 id="pdfModalTitle" class="font-bold text-sm sm:text-base text-white truncate flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf text-pink-400"></i>
+                    <span>เอกสารใบประกาศนียบัตร</span>
+                </h4>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <button type="button" onclick="closePdfModal()" class="p-1.5 text-gray-400 hover:text-white text-lg transition-colors cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 bg-black/50 p-2 overflow-hidden flex items-center justify-center">
+                <iframe id="pdfPreviewIframe" class="w-full h-full rounded-2xl border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔔 TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- 🔗 JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
